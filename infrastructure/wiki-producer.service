@@ -1,0 +1,13 @@
+[Unit]
+Description=Wikimedia Kinesis Producer
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/ubuntu/producer.py
+Restart=always
+RestartSec=5
+User=ubuntu
+Environment=AWS_DEFAULT_REGION=eu-west-1
+
+[Install]
+WantedBy=multi-user.target
