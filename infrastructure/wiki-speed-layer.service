@@ -1,0 +1,16 @@
+[Unit]
+Description=Wiki Speed Layer — Spark Structured Streaming
+After=network.target
+
+[Service]
+ExecStart=/opt/spark/bin/spark-submit \
+  --jars /opt/spark/jars/spark-sql-kinesis.jar \
+  --conf spark.sql.shuffle.partitions=2 \
+  /home/ubuntu/speed_layer.py
+Restart=always
+RestartSec=10
+User=ubuntu
+Environment=AWS_DEFAULT_REGION=eu-west-1
+
+[Install]
+WantedBy=multi-user.target
