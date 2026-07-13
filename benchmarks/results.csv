@@ -1,0 +1,4 @@
+nodes,execution_time_seconds,speedup,throughput_records_per_sec
+1,124,1.00,4032
+2,117,1.06,4274
+4,128,0.97,3906

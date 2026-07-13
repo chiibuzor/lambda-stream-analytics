@@ -1,0 +1,55 @@
+{
+  "Constraints": {
+    "MinimumCapacityUnits": 2,
+    "MaximumCapacityUnits": 6,
+    "MaximumOnDemandCapacityUnits": 6
+  },
+  "Rules": [
+    {
+      "Name": "ScaleOut-LowMemory",
+      "Description": "Add 2 nodes when YARN memory drops below 20%",
+      "Action": {
+        "SimpleScalingPolicyConfiguration": {
+          "AdjustmentType": "CHANGE_IN_CAPACITY",
+          "ScalingAdjustment": 2,
+          "CoolDown": 300
+        }
+      },
+      "Trigger": {
+        "CloudWatchAlarmDefinition": {
+          "ComparisonOperator": "LESS_THAN",
+          "EvaluationPeriods": 1,
+          "MetricName": "YARNMemoryAvailablePercentage",
+          "Namespace": "AWS/ElasticMapReduce",
+          "Period": 300,
+          "Threshold": 20,
+          "Statistic": "AVERAGE",
+          "Unit": "PERCENT"
+        }
+      }
+    },
+    {
+      "Name": "ScaleIn-HighMemory",
+      "Description": "Remove 1 node when YARN memory exceeds 80%",
+      "Action": {
+        "SimpleScalingPolicyConfiguration": {
+          "AdjustmentType": "CHANGE_IN_CAPACITY",
+          "ScalingAdjustment": -1,
+          "CoolDown": 300
+        }
+      },
+      "Trigger": {
+        "CloudWatchAlarmDefinition": {
+          "ComparisonOperator": "GREATER_THAN",
+          "EvaluationPeriods": 1,
+          "MetricName": "YARNMemoryAvailablePercentage",
+          "Namespace": "AWS/ElasticMapReduce",
+          "Period": 300,
+          "Threshold": 80,
+          "Statistic": "AVERAGE",
+          "Unit": "PERCENT"
+        }
+      }
+    }
+  ]
+}
